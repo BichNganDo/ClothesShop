@@ -371,7 +371,7 @@
                                     showNotification("success", response.message);
                                     $("#name").val("");
                                     $("#price").val("");
-
+                                    window.location.replace("${app_domain}/listproducts");
                                 } else {
                                     showNotification("error", response.message);
                                 }

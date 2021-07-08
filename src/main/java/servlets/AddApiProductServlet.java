@@ -3,10 +3,13 @@ package servlets;
 import com.google.gson.Gson;
 import common.APIResult;
 import common.Config;
+import entity.Product;
 import helper.HttpHelper;
 import helper.ServletUtil;
 
 import java.io.IOException;
+import java.util.List;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +21,9 @@ import org.json.JSONObject;
 public class AddApiProductServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Gson gson = new Gson();
+        List<Product> listProducts = ProductModel.getListProducts();
+        ServletUtil.printJson(request, response, gson.toJson(listProducts));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

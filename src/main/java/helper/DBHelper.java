@@ -6,11 +6,14 @@
 package helper;
 
 import com.google.gson.Gson;
+import entity.Product;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +62,6 @@ public class DBHelper {
         }
     }
 
-
     public void testGet() {
         try {
             String sql;
@@ -83,11 +85,11 @@ public class DBHelper {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public int executePut (String sql) {
+
+    public int executePut(String sql) {
         try {
             open();
-            
+
             int executeUpdate = stmt.executeUpdate(sql); // DDL
 
             return executeUpdate;
@@ -100,6 +102,42 @@ public class DBHelper {
         return -1;
     }
 
+    public ResultSet executeGet(String sql) {
+        try {
+            open();
+            return stmt.executeQuery(sql);
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return null;
 
-    
+    }
+
+    public List<Product> executeGet2(String sql) {
+        List<Product> listProducts = new ArrayList<>();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt(1));
+                product.setName(rs.getString(2));
+                product.setPrice(rs.getInt(3));
+                product.setStatus(rs.getString(4));
+                
+                listProducts.add(product);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return listProducts;
+
+    }
+
 }
