@@ -13,9 +13,10 @@ import java.util.Map;
 public class PageGenerator {
 
     public static final String HTML_DIR = "templates";
+    public static final String UTF8 = "UTF-8";
 
     private static PageGenerator pageGenerator;
-    private final Configuration cfg;
+    private Configuration cfg;
 
     public static PageGenerator instance() {
         if (pageGenerator == null) {
@@ -28,7 +29,7 @@ public class PageGenerator {
     public String getPage(String filename, Map<String, Object> data) {
         Writer stream = new StringWriter();
         try {
-            Template template = cfg.getTemplate(HTML_DIR + File.separator + filename);
+            Template template = cfg.getTemplate(HTML_DIR + File.separator + filename, UTF8);
             template.process(data, stream);
         } catch (IOException | TemplateException e) {
             e.printStackTrace();

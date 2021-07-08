@@ -14,7 +14,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new DemoServlet()), "/demo");
+        context.addServlet(new ServletHolder(new ManageProductServlet()), "/listproducts");
+        context.addServlet(new ServletHolder(new AddProductServlet()), "/addproduct");
+        context.addServlet(new ServletHolder(new AddApiProductServlet()), "/api/addproduct");
 
         ContextHandler resourceHandler = new ContextHandler("/static");
         String resource = "./public";

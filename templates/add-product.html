@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+
 <html lang="en">
 
 <head>
@@ -16,6 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="${static_domain}/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${static_domain}/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="${static_domain}/dist/css/toastr.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -277,19 +275,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="form-group">
                                     <label>Product Name</label>
                                     <input type="text" class="form-control" id="name" placeholder="Product Name">
+                                    <p style="color: red;" id="name_error"></p>
                                 </div>
                                 <div class="form-group">
                                     <label>Image Product</label>
                                     <div class="input-group">
                                         <input type="file" id="exampleInputFile">
+                                        <p style="color: red;" id="file_error"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Price</label>
                                     <input type="text" class="form-control" id="price" placeholder="Price">
+                                    <p style="color: red;" id="price_error"></p>
                                 </div>
                                 <div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
                                 </div>
                             </div>
 
@@ -330,6 +331,62 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- AdminLTE App -->
         <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+        <script src="${static_domain}/dist/js/notification.js"></script>
+        <script src="${static_domain}/dist/js/toastr.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#btn-submit").click(function() {
+
+                    let productName = $.trim($("#name").val());
+                    let price = $.trim($("#price").val());
+                    let flag = true;
+                    console.log(productName, price);
+
+                    if (productName == "" || productName == null) {
+                        $("#name_error").text("Bạn chưa nhập tên sản phẩm");
+                        flag = false;
+                    } else {
+                        $("#name_error").text("");
+                    }
+
+                    if (price == "" || price == null) {
+                        $("#price_error").text("Bạn chưa nhập giá sản phẩm");
+                        flag = false;
+                    } else {
+                        $("#price_error").text("");
+                    }
+
+                    if (flag) {
+                        $.ajax({
+                            url: "${app_domain}/api/addproduct?action=add",
+                            type: "POST",
+                            dataType: "json",
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                name: productName,
+                                price: price
+                            }),
+                            success(response) {
+                                if (response.errorCode >= 0) {
+                                    showNotification("success", response.message);
+                                    $("#name").val("");
+                                    $("#price").val("");
+
+                                } else {
+                                    showNotification("error", response.message);
+                                }
+
+                            }
+                        })
+
+                    }
+
+                    return flag;
+
+                });
+
+            });
+        </script>
 </body>
 
 </html>
