@@ -262,7 +262,7 @@ public class HttpHelper {
         try {
             InputStream inputStream = req.getInputStream();
             if (inputStream != null) {
-                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 char[] charBuffer = new char[1024];
                 int bytesRead = -1;
                 while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {

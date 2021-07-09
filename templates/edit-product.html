@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Products</title>
+    <title>Edit Products</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="${static_domain}/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${static_domain}/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="${static_domain}/dist/css/toastr.min.css">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -207,19 +208,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Active Page</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inactive Page</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link active">
+                                    <a href="${app_domain}/listproducts" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
                                     </a>
@@ -281,7 +270,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <div class="form-group">
                                     <label>Image Product</label>
                                     <div class="input-group">
-                                        <input type="file" id="exampleInputFile">
+                                        <input type="file" id="image">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -289,7 +278,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <input type="text" class="form-control" id="price" placeholder="Price">
                                 </div>
                                 <div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
                                 </div>
                             </div>
 
@@ -310,26 +299,74 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </aside>
             <!-- /.control-sidebar -->
 
-            <!-- Main Footer -->
-            <!-- <footer class="main-footer">
-               
-                <div class="float-right d-none d-sm-inline">
-                    Anything you want
-                </div>
-                Default to the left
-                <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-            </footer> -->
-        </div>
-        <!-- ./wrapper -->
 
-        <!-- REQUIRED SCRIPTS -->
+            <!-- REQUIRED SCRIPTS -->
+            <textarea id="data-edit" style="display: none;">${product}</textarea>
+            <!-- jQuery -->
+            <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
+            <!-- Bootstrap 4 -->
+            <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- AdminLTE App -->
+            <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+            <script src="${static_domain}/dist/js/notification.js"></script>
+            <script src="${static_domain}/dist/js/toastr.min.js"></script>
+            <script>
+                var products = JSON.parse(document.getElementById("data-edit").value);
+                $("#name").val(products.name);
+                $("#image").val(products.image);
+                $("#price").val(products.price);
 
-        <!-- jQuery -->
-        <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap 4 -->
-        <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+                $(document).ready(function() {
+                    $("#btn-submit").click(function() {
+                        let productName = $.trim($("#name").val());
+                        let price = $.trim($("#price").val());
+                        let flag = true;
+                        console.log(productName, price);
+
+                        if (productName == "" || productName == null) {
+                            $("#name_error").text("Bạn chưa nhập tên sản phẩm");
+                            flag = false;
+                        } else {
+                            $("#name_error").text("");
+                        }
+
+                        if (price == "" || price == null) {
+                            $("#price_error").text("Bạn chưa nhập giá sản phẩm");
+                            flag = false;
+                        } else {
+                            $("#price_error").text("");
+                        }
+
+                        if (flag) {
+                            $.ajax({
+                                url: "${app_domain}/api/product?action=edit",
+                                type: "POST",
+                                dataType: "json",
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    id: products.id,
+                                    name: productName,
+                                    price: price
+                                }),
+                                success(response) {
+                                    if (response.errorCode >= 0) {
+                                        showNotification("success", response.message);
+                                        // window.location.replace("${app_domain}/listproducts");
+                                    } else {
+                                        showNotification("error", response.message);
+                                    }
+
+                                }
+                            })
+
+                        }
+
+                        return flag;
+
+                    });
+
+                });
+            </script>
 </body>
 
 </html>

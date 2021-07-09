@@ -5,7 +5,7 @@
  */
 package helper;
 
-import com.google.gson.Gson;
+import common.Config;
 import entity.Product;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONObject;
 
 /**
  * @author ngando
@@ -24,8 +25,7 @@ public class DBHelper {
 
     // JDBC driver name and database URL
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final String DB_URL = "jdbc:mysql://localhost:3306/clothes_shop"; //INSERT DATABASE NAME
-
+    private final String DB_URL = "jdbc:mysql://localhost:3306/clothes_shop?useUnicode=true&characterEncoding=UTF-8"; //INSERT DATABASE NAME
     //  Database credentials
     private static final String USER = "root";
     private static final String PASS = "123456";
@@ -125,9 +125,10 @@ public class DBHelper {
                 Product product = new Product();
                 product.setId(rs.getInt(1));
                 product.setName(rs.getString(2));
-                product.setPrice(rs.getInt(3));
-                product.setStatus(rs.getString(4));
-                
+                product.setImage(rs.getString(3));
+                product.setPrice(rs.getInt(4));
+                product.setStatus(rs.getString(5));
+
                 listProducts.add(product);
             }
 
@@ -137,6 +138,30 @@ public class DBHelper {
             close();
         }
         return listProducts;
+
+    }
+
+    public Product getProductById(String sql) {
+        Product product = new Product();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                product.setId(rs.getInt(1));
+                product.setName(rs.getString(2));
+                product.setImage(rs.getString(3));
+                product.setPrice(rs.getInt(4));
+                product.setStatus(rs.getString(5));
+
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return product;
 
     }
 

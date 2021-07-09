@@ -12,6 +12,7 @@ package common;
 public class APIResult {
     private int errorCode;
     private String message;
+    private Object data;
 
     public APIResult() {
     }
@@ -19,6 +20,7 @@ public class APIResult {
     public APIResult(int errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
+        this.data = data;
     }
 
     public int getErrorCode() {
@@ -36,5 +38,14 @@ public class APIResult {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+    
     
 }

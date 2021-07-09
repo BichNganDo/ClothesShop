@@ -5,15 +5,17 @@ package entity;
 public class Product {
     private int id;
     private String name;
+    private String image;
     private int price;
     private String status;
 
     public Product() {
     }
 
-    public Product(int id, String name, int price, String status) {
+    public Product(int id, String name, String image, int price, String status) {
         this.id = id;
         this.name = name;
+        this.image = image;
         this.price = price;
         this.status = status;
     }
@@ -48,6 +50,18 @@ public class Product {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void getImage(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

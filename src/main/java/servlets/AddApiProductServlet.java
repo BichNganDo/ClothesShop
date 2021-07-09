@@ -10,7 +10,6 @@ import helper.ServletUtil;
 import java.io.IOException;
 import java.util.List;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,13 +40,55 @@ public class AddApiProductServlet extends HttpServlet {
                 String status = jData.optString("status");
 
                 int addProduct = ProductModel.addProduct(name, image, price, status);
-                if (addProduct >=0) {
+                if (addProduct >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Thêm sản phẩm thành công!");
                 } else {
                     result.setErrorCode(-1);
                     result.setMessage("Thêm sản phẩm thất bại!");
                 }
+                break;
+            }
+
+            case "edit": {
+                String bodyData = HttpHelper.getBodyData(request);
+                JSONObject jData = new JSONObject(bodyData);
+                int id = jData.optInt("id");
+                String name = jData.optString("name");
+                String image = jData.optString("image");
+                int price = jData.optInt("price");
+                String status = jData.optString("status");
+
+                int editProduct = ProductModel.editProduct(id, name, image, price, status);
+                if (editProduct >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Sửa sản phẩm thành công!");
+                } else {
+                    result.setErrorCode(-1);
+                    result.setMessage("Sửa sản phẩm thất bại!");
+                }
+                break;
+            }
+            case "delete": {
+                String bodyData = HttpHelper.getBodyData(request);
+                JSONObject jData = new JSONObject(bodyData);
+                int id = jData.optInt("id");
+                int removeProduct = ProductModel.removeProduct(id);
+                if (removeProduct >= 0) {
+                    result.setErrorCode(0);
+                    result.setMessage("Xóa sản phẩm thành công!");
+                } else {
+                    result.setErrorCode(-2);
+                    result.setMessage("Xóa sản phẩm thất bại!");
+                }
+                break;
+            }
+            case "search": {
+                String bodyData = HttpHelper.getBodyData(request);
+                JSONObject jData = new JSONObject(bodyData);
+                String query = jData.optString("query");
+                List<Product> searchProduct = ProductModel.searchProduct(query);
+                result.setData(searchProduct);
                 break;
             }
 

@@ -1,5 +1,6 @@
 package servlets;
 
+import common.Config;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,8 @@ public class ManageProductServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("static_domain", "http://localhost:8080/static");
+        pageVariables.put("app_domain", Config.APP_DOMAIN);
+        pageVariables.put("static_domain", Config.STATIC_DOMAIN);
         pageVariables.put("message", "hello word");
 
         response.setContentType("text/html;charset=UTF-8");
