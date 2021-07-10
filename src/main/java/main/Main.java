@@ -15,11 +15,17 @@ public class Main {
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new ManageProductServlet()), "/listproducts");
+        context.addServlet(new ServletHolder(new ManageUserSevlet()), "/listusers");
 
         context.addServlet(new ServletHolder(new AddProductServlet()), "/addproduct");
+        context.addServlet(new ServletHolder(new AddUserServlet()), "/adduser");
         context.addServlet(new ServletHolder(new EditProductServlet()), "/editproduct");
+        context.addServlet(new ServletHolder(new EditUserServlet()), "/edituser");
+        context.addServlet(new ServletHolder(new LoginUserServlet()), "/login");
         
         context.addServlet(new ServletHolder(new AddApiProductServlet()), "/api/product");
+        context.addServlet(new ServletHolder(new AddApiUserServlet()), "/api/user");
+        context.addServlet(new ServletHolder(new LoginApiUserServlet()), "/api/login");
 
         ContextHandler resourceHandler = new ContextHandler("/static");
         String resource = "./public";

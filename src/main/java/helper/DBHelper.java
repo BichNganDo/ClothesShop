@@ -5,8 +5,8 @@
  */
 package helper;
 
-import common.Config;
 import entity.Product;
+import entity.User;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONObject;
 
 /**
  * @author ngando
@@ -72,7 +71,7 @@ public class DBHelper {
             //STEP 5: Extract data from result set
             while (rs.next()) {
                 //Display values
-                System.out.print(rs.getString(1));
+                System.out.print(rs.getInt(1));
                 System.out.print(rs.getString(2));
                 System.out.print(rs.getString(3));
                 System.out.print(rs.getString(4));
@@ -102,20 +101,7 @@ public class DBHelper {
         return -1;
     }
 
-    public ResultSet executeGet(String sql) {
-        try {
-            open();
-            return stmt.executeQuery(sql);
-        } catch (Exception ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close();
-        }
-        return null;
-
-    }
-
-    public List<Product> executeGet2(String sql) {
+    public List<Product> executeGet(String sql) {
         List<Product> listProducts = new ArrayList<>();
         try {
             open();
@@ -163,6 +149,73 @@ public class DBHelper {
         }
         return product;
 
+    }
+
+    public List<User> executeGetUser(String sql) {
+        List<User> listUsers = new ArrayList<>();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt(1));
+                user.setUsername(rs.getString(2));
+//                user.setPassword(rs.getString(3));
+                user.setPhone(rs.getString(4));
+                user.setAddress(rs.getString(5));
+
+                listUsers.add(user);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return listUsers;
+
+    }
+
+    public User getUserById(String sql) {
+        User user = new User();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                user.setId(rs.getInt(1));
+                user.setUsername(rs.getString(2));
+                user.setPassword(rs.getString(3));
+                user.setPhone(rs.getString(4));
+                user.setAddress(rs.getString(5));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return user;
+
+    }
+    public boolean checkLogin(String phone, String password) {
+        open();
+        String sql = "SELECT `phone`, `password` FROM `user_tbl` WHERE phone = '" + phone + "' AND password = '" + password + "'";
+        
+        try {
+            ResultSet rs = stmt.executeQuery(sql); // DML
+            while (rs.next()) {
+                if (rs.getString(1).equals(phone) && rs.getString(2).equals(password)) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return false;
     }
 
 }

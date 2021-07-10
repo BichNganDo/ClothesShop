@@ -181,7 +181,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="User Name" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -205,7 +205,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listproducts" class="nav-link active">
+                                    <a href="${app_domain}/listproducts" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
                                     </a>
@@ -213,7 +213,7 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listusers" class="nav-link">
+                                    <a href="${app_domain}/listusers" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Users</p>
                                     </a>
@@ -243,7 +243,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Add Products</h1>
+                            <h1 class="m-0">Add Users</h1>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
@@ -269,21 +269,24 @@
                         <form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Product Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Product Name">
+                                    <label>User Name</label>
+                                    <input type="text" class="form-control" id="username" placeholder="User Name">
                                     <p style="color: red;" id="name_error"></p>
                                 </div>
                                 <div class="form-group">
-                                    <label>Image Product</label>
-                                    <div class="input-group">
-                                        <input type="file" id="exampleInputFile">
-                                        <p style="color: red;" id="file_error"></p>
-                                    </div>
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <p style="color: red;" id="name_error"></p>
                                 </div>
                                 <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="text" class="form-control" id="price" placeholder="Price">
-                                    <p style="color: red;" id="price_error"></p>
+                                    <label>Phone</label>
+                                    <input type="text" class="form-control" id="phone" placeholder="Phone">
+                                    <p style="color: red;" id="phone_error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" id="address" placeholder="Address">
+                                    <p style="color: red;" id="address_error"></p>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
@@ -313,41 +316,61 @@
             $(document).ready(function() {
                 $("#btn-submit").click(function() {
 
-                    let productName = $.trim($("#name").val());
-                    let price = $.trim($("#price").val());
-                    let flag = true;
-                    console.log(productName, price);
+                    let username = $.trim($("#username").val());
+                    let password = $.trim($("#password").val());
+                    let phone = $.trim($("#phone").val());
+                    let address = $.trim($("#address").val());
 
-                    if (productName == "" || productName == null) {
-                        $("#name_error").text("Bạn chưa nhập tên sản phẩm");
+                    let flag = true;
+
+
+                    if (username == "" || username == null) {
+                        $("#name_error").text("Bạn chưa nhập tên người dùng");
                         flag = false;
                     } else {
                         $("#name_error").text("");
                     }
 
-                    if (price == "" || price == null) {
-                        $("#price_error").text("Bạn chưa nhập giá sản phẩm");
+                    if (password == "" || password == null) {
+                        $("#password_error").text("Bạn chưa nhập mật khẩu");
                         flag = false;
                     } else {
-                        $("#price_error").text("");
+                        $("#password_error").text("");
+                    }
+
+                    if (phone == "" || phone == null) {
+                        $("#phone_error").text("Bạn chưa nhập số điện thoại người dùng");
+                        flag = false;
+                    } else {
+                        $("#phone_error").text("");
+                    }
+
+                    if (address == "" || address == null) {
+                        $("#address_error").text("Bạn chưa nhập địa chỉ người dùng");
+                        flag = false;
+                    } else {
+                        $("#address_error").text("");
                     }
 
                     if (flag) {
                         $.ajax({
-                            url: "${app_domain}/api/product?action=add",
+                            url: "${app_domain}/api/user?action=add",
                             type: "POST",
                             dataType: "json",
                             contentType: 'application/json',
                             data: JSON.stringify({
-                                name: productName,
-                                price: price
+                                username: username,
+                                password: password,
+                                phone: phone,
+                                address: address
                             }),
                             success(response) {
                                 if (response.errorCode >= 0) {
                                     showNotification("success", response.message);
-                                    $("#name").val("");
-                                    $("#price").val("");
-                                    window.location.replace("${app_domain}/listproducts");
+                                    $("#username").val("");
+                                    $("#password").val("");
+                                    $("#phone").val("");
+                                    $("#address").val("");
                                 } else {
                                     showNotification("error", response.message);
                                 }

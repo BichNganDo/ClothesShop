@@ -30,7 +30,7 @@ public class ProductModel {
 
         try {
             String sql = "SELECT * FROM product_tbl";
-            listProducts = dbHelper.executeGet2(sql);
+            listProducts = dbHelper.executeGet(sql);
         } catch (Exception e) {
         }
         return listProducts;
@@ -62,7 +62,7 @@ public class ProductModel {
         List<Product> listSearchProducts = new ArrayList<>();
         try {
             String sql = "SELECT * FROM `product_tbl` WHERE name = '"+valueSearch+"'";
-            listSearchProducts = dbHelper.executeGet2(sql);
+            listSearchProducts = dbHelper.executeGet(sql);
         } catch (Exception e) {
         }
         return listSearchProducts;
