@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Add Products</title>
+    <title>Clothes Shop</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -18,7 +21,6 @@
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -181,7 +183,7 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="User Name" aria-label="Search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -205,7 +207,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listproducts" class="nav-link">
+                                    <a href="${app_domain}/listcate" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Categogies</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="${app_domain}/listproducts" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
                                     </a>
@@ -213,7 +223,7 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listusers" class="nav-link active">
+                                    <a href="${app_domain}/listusers" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Users</p>
                                     </a>
@@ -243,7 +253,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Add Users</h1>
+                            <h1 class="m-0">Manage Products</h1>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
@@ -263,129 +273,220 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-                    <div class="card card-primary">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <input id="value-search" type="text" name="search" class="form-control" placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button type="submit" name="submit" class="btn btn-primary" id="btn-search"><i class="fas fa-search"> Search</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <!-- form start -->
-                        <form>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label>User Name</label>
-                                    <input type="text" class="form-control" id="username" placeholder="User Name">
-                                    <p style="color: red;" id="name_error"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
-                                    <p style="color: red;" id="name_error"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Phone">
-                                    <p style="color: red;" id="phone_error"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="Address">
-                                    <p style="color: red;" id="address_error"></p>
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
+                                <div class="col-sm-6 text-right">
+                                    <a class="btn btn-primary" href="/addproduct">
+                                        <i class="fas fa-plus"></i> Add Product
+                                    </a>
                                 </div>
                             </div>
-
+                        </div>
                     </div>
-                    <!-- /.container-fluid -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Products</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 1%">
+                                            ID
+                                        </th>
+                                        <th style="width: 20%">
+                                            Product Name
+                                        </th>
+                                        <th style="width: 15%">
+                                            Image Product
+                                        </th>
+                                        <th style="width: 17%">
+                                            Price
+                                        </th>
+                                        <th style="width: 19%">
+                                            Categogy
+                                        </th>
+                                        <th style="width: 8%" class="text-center">
+                                            Status
+                                        </th>
+                                        <th style="width: 20%">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-products">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.content -->
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.content-wrapper -->
+            <!-- /.content -->
         </div>
-        <!-- ./wrapper -->
+        <!-- /.content-wrapper -->
 
-        <!-- REQUIRED SCRIPTS -->
+    </div>
+    <!-- ./wrapper -->
 
-        <!-- jQuery -->
-        <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap 4 -->
-        <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="${static_domain}/dist/js/adminlte.min.js"></script>
-        <script src="${static_domain}/dist/js/notification.js"></script>
-        <script src="${static_domain}/dist/js/toastr.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $("#btn-submit").click(function() {
+    <!-- REQUIRED SCRIPTS -->
 
-                    let username = $.trim($("#username").val());
-                    let password = $.trim($("#password").val());
-                    let phone = $.trim($("#phone").val());
-                    let address = $.trim($("#address").val());
+    <!-- jQuery -->
+    <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+    <script src="${static_domain}/dist/js/notification.js"></script>
+    <script src="${static_domain}/dist/js/toastr.min.js"></script>
+    <script>
+        function reloadProduct() {
+            $.ajax({
+                url: "${app_domain}/api/product",
+                type: "GET",
+                dataType: "json",
+                success(products) {
+                    var listProducts = document.getElementById("list-products");
+                    console.log(listProducts);
+                    listProducts.innerHTML = "";
+                    for (var key in products) {
+                        if (products.hasOwnProperty(key)) {
+                            let product = products[key];
+                            let newTr = document.createElement("tr");
 
-                    let flag = true;
-
-
-                    if (username == "" || username == null) {
-                        $("#name_error").text("Bạn chưa nhập tên người dùng");
-                        flag = false;
-                    } else {
-                        $("#name_error").text("");
+                            newTr.innerHTML = `
+                                <td>` + product.id + `</td>
+                                <td>` + product.name + `</td>
+                                <td>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="${static_domain}/dist/img/photo1.png">
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>` + product.price + `</td>
+                                <td>` + product.cate + `</td>
+                                <td class="project-state">` + product.status + `</td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-info btn-sm" href="${app_domain}/editproduct?id=` + product.id + `">
+                                        <i class="fas fa-pencil-alt"></i> Edit
+                                    </a>
+                                    <a onclick="deleteProduct(` + product.id + `)" class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </td>`
+                            listProducts.appendChild(newTr);
+                        }
                     }
+                }
+            })
 
-                    if (password == "" || password == null) {
-                        $("#password_error").text("Bạn chưa nhập mật khẩu");
-                        flag = false;
-                    } else {
-                        $("#password_error").text("");
+        }
+        reloadProduct();
+
+        //search
+        function reloadProduct2(products) {
+            var listProducts = document.getElementById("list-products");
+            console.log(listProducts);
+            listProducts.innerHTML = "";
+            for (var key in products) {
+                if (products.hasOwnProperty(key)) {
+                    let product = products[key];
+                    let newTr = document.createElement("tr");
+
+                    newTr.innerHTML = `
+                                <td>` + product.id + `</td>
+                                <td>` + product.name + `</td>
+                                <td>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <img alt="Avatar" class="table-avatar" src="${static_domain}/dist/img/photo1.png">
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>` + product.price + `</td>
+                                <td>` + product.cate + `</td>
+                                <td class="project-state">` + product.status + `</td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-primary btn-sm" href="#">
+                                        <i class="fas fa-folder"></i> View
+                                    </a>
+                                    <a class="btn btn-info btn-sm" href="${app_domain}/editproduct?id=` + product.id + `">
+                                        <i class="fas fa-pencil-alt"></i> Edit
+                                    </a>
+                                    <a onclick="deleteProduct(` + product.id + `)" class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </td>`
+                    listProducts.appendChild(newTr);
+                }
+            }
+
+        }
+
+        function deleteProduct(idDel) {
+            if (confirm("ban co muon xoa khong ?")) {
+                $.ajax({
+                    url: "${app_domain}/api/product?action=delete",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: idDel
+                    }),
+                    success(response) {
+                        if (response.errorCode >= 0) {
+                            showNotification("success", response.message);
+                            reloadProduct();
+                        } else {
+                            showNotification("error", response.message);
+                        }
+
                     }
+                })
+            }
 
-                    if (phone == "" || phone == null) {
-                        $("#phone_error").text("Bạn chưa nhập số điện thoại người dùng");
-                        flag = false;
-                    } else {
-                        $("#phone_error").text("");
-                    }
+        }
 
-                    if (address == "" || address == null) {
-                        $("#address_error").text("Bạn chưa nhập địa chỉ người dùng");
-                        flag = false;
-                    } else {
-                        $("#address_error").text("");
-                    }
-
-                    if (flag) {
-                        $.ajax({
-                            url: "${app_domain}/api/user?action=add",
-                            type: "POST",
-                            dataType: "json",
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                username: username,
-                                password: password,
-                                phone: phone,
-                                address: address
-                            }),
-                            success(response) {
-                                if (response.errorCode >= 0) {
-                                    showNotification("success", response.message);
-                                    $("#username").val("");
-                                    $("#password").val("");
-                                    $("#phone").val("");
-                                    $("#address").val("");
-                                } else {
-                                    showNotification("error", response.message);
-                                }
-
-                            }
-                        })
-
-                    }
-
-                    return flag;
-
-                });
-
-            });
-        </script>
+        $("#btn-search").click(function() {
+            var valueSearch = $("#value-search").val();
+            $.ajax({
+                url: "${app_domain}/api/product?action=search",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    query: valueSearch
+                }),
+                success(response) {
+                    reloadProduct2(response.data);
+                }
+            })
+        });
+    </script>
 </body>
 
 </html>

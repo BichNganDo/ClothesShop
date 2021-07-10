@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Products</title>
+    <title>User</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -208,6 +208,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="${app_domain}/listcate" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Categogies</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
                                     <a href="${app_domain}/listproducts" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
@@ -246,7 +254,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Edit Users</h1>
+                            <h1 class="m-0">Manage Users</h1>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
@@ -266,116 +274,140 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-                    <div class="card card-primary">
-
-                        <!-- form start -->
-                        <form>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label>User Name</label>
-                                    <input type="text" class="form-control" id="username" placeholder="User Name">
-                                </div>
-                                <div class="form-group">
-                                    <label>Change Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
-                                    <p style="color: red;" id="name_error"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Phone" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="Address">
-                                </div>
-                                <div>
-                                    <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6 text-right">
+                                    <a class="btn btn-primary" href="/adduser">
+                                        <i class="fas fa-plus"></i> Add user
+                                    </a>
                                 </div>
                             </div>
-
+                        </div>
                     </div>
-                    <!-- /.container-fluid -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Users</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 2%">
+                                            ID
+                                        </th>
+                                        <th style="width: 20%">
+                                            User Name
+                                        </th>
+                                        <th style="width: 20%">
+                                            Phone
+                                        </th>
+                                        <th>
+                                            Address
+                                        </th>
+                                        <th style="width: 30%">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-users">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.content -->
+                <!-- /.container-fluid -->
             </div>
-            <!-- /.content-wrapper -->
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+    </div>
+    <!-- ./wrapper -->
 
+    <!-- REQUIRED SCRIPTS -->
 
-            <!-- REQUIRED SCRIPTS -->
-            <textarea id="data-edit" style="display: none;">${user}</textarea>
-            <!-- jQuery -->
-            <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
-            <!-- Bootstrap 4 -->
-            <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <!-- AdminLTE App -->
-            <script src="${static_domain}/dist/js/adminlte.min.js"></script>
-            <script src="${static_domain}/dist/js/notification.js"></script>
-            <script src="${static_domain}/dist/js/toastr.min.js"></script>
-            <script>
-                var users = JSON.parse(document.getElementById("data-edit").value);
-                console.log(users);
-                $("#username").val(users.username);
-                $("#phone").val(users.phone);
-                $("#address").val(users.address);
+    <!-- jQuery -->
+    <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="${static_domain}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="${static_domain}/dist/js/adminlte.min.js"></script>
+    <script src="${static_domain}/dist/js/notification.js"></script>
+    <script src="${static_domain}/dist/js/toastr.min.js"></script>
+    <script>
+        function reloadUser() {
+            $.ajax({
+                url: "${app_domain}/api/user",
+                type: "GET",
+                dataType: "json",
+                success(users) {
+                    var listUsers = document.getElementById("list-users");
+                    console.log(listUsers);
+                    listUsers.innerHTML = "";
+                    for (var key in users) {
+                        if (users.hasOwnProperty(key)) {
+                            let user = users[key];
+                            let newTr = document.createElement("tr");
 
-                $(document).ready(function() {
-                    $("#btn-submit").click(function() {
-                        let username = $.trim($("#username").val());
-                        let password = $.trim($("#password").val());
+                            newTr.innerHTML = `
+                                <td>` + user.id + `</td>
+                                <td>` + user.username + `</td>
+                                <td>` + user.phone + `</td>
+                                <td>` + user.address + `</td>
+                                <td class="project-actions text-right">
+                                    <a class="btn btn-info btn-sm" href="${app_domain}/edituser?id=` + user.id + `">
+                                        <i class="fas fa-pencil-alt"></i> Edit
+                                    </a>
+                                    <a onclick="deleteUser(` + user.id + `)" class="btn btn-danger btn-sm" href="#">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                </td>`
+                            listUsers.appendChild(newTr);
+                        }
+                    }
+                }
+            })
 
-                        let address = $.trim($("#address").val());
-                        let flag = true;
+        }
+        reloadUser();
 
-                        if (username == "" || username == null) {
-                            $("#name_error").text("Bạn chưa nhập tên người dùng");
-                            flag = false;
+        function deleteUser(idDel) {
+            if (confirm("ban co muon xoa khong ?")) {
+                $.ajax({
+                    url: "${app_domain}/api/user?action=delete",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: idDel
+                    }),
+                    success(response) {
+                        if (response.errorCode >= 0) {
+                            showNotification("success", response.message);
+                            reloadUser();
                         } else {
-                            $("#name_error").text("");
+                            showNotification("error", response.message);
                         }
 
+                    }
+                })
+            }
 
-                        if (address == "" || address == null) {
-                            $("#address_error").text("Bạn chưa nhập địa chỉ người dùng");
-                            flag = false;
-                        } else {
-                            $("#address_error").text("");
-                        }
-
-
-                        if (flag) {
-                            $.ajax({
-                                url: "${app_domain}/api/user?action=edit",
-                                type: "POST",
-                                dataType: "json",
-                                contentType: 'application/json',
-                                data: JSON.stringify({
-                                    id: users.id,
-                                    username: username,
-                                    password: password,
-
-                                    address: address
-                                }),
-                                success(response) {
-                                    if (response.errorCode >= 0) {
-                                        showNotification("success", response.message);
-                                        reloadUser();
-                                    } else {
-                                        showNotification("error", response.message);
-                                    }
-
-                                }
-                            })
-
-                        } else {
-                            showNotification("error", "Dữ liệu không hợp lệ!");
-                        }
-
-                        return flag;
-
-                    });
-
-                });
-            </script>
+        }
+    </script>
 </body>
 
 </html>

@@ -208,7 +208,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listproducts" class="nav-link active">
+                                    <a href="${app_domain}/listcate" class="nav-link active">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Categogies</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="${app_domain}/listproducts" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
                                     </a>
@@ -246,7 +254,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Edit Products</h1>
+                            <h1 class="m-0">Edit Categogy</h1>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
@@ -272,24 +280,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Product Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Product Name">
-                                </div>
-                                <div class="form-group">
-                                    <label>Image Product</label>
-                                    <div class="input-group">
-                                        <input type="file" id="image">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="text" class="form-control" id="price" placeholder="Price">
+                                    <label>Categogy Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Categogy Name">
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
                                 </div>
                             </div>
-
+                        </form>
                     </div>
                     <!-- /.container-fluid -->
                 </div>
@@ -299,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
             <!-- REQUIRED SCRIPTS -->
-            <textarea id="data-edit" style="display: none;">${product}</textarea>
+            <textarea id="data-edit" style="display: none;">${categogy}</textarea>
             <!-- jQuery -->
             <script src="${static_domain}/plugins/jquery/jquery.min.js"></script>
             <!-- Bootstrap 4 -->
@@ -309,42 +307,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <script src="${static_domain}/dist/js/notification.js"></script>
             <script src="${static_domain}/dist/js/toastr.min.js"></script>
             <script>
-                var products = JSON.parse(document.getElementById("data-edit").value);
-                $("#name").val(products.name);
-                $("#image").val(products.image);
-                $("#price").val(products.price);
+                var categogies = JSON.parse(document.getElementById("data-edit").value);
+                $("#name").val(categogies.name);
 
                 $(document).ready(function() {
                     $("#btn-submit").click(function() {
-                        let productName = $.trim($("#name").val());
-                        let price = $.trim($("#price").val());
+                        let cateName = $.trim($("#name").val());
                         let flag = true;
-                        console.log(productName, price);
 
-                        if (productName == "" || productName == null) {
-                            $("#name_error").text("Bạn chưa nhập tên sản phẩm");
+                        if (cateName == "" || cateName == null) {
+                            $("#name_error").text("Bạn chưa nhập tên danh mục");
                             flag = false;
                         } else {
                             $("#name_error").text("");
                         }
 
-                        if (price == "" || price == null) {
-                            $("#price_error").text("Bạn chưa nhập giá sản phẩm");
-                            flag = false;
-                        } else {
-                            $("#price_error").text("");
-                        }
-
                         if (flag) {
                             $.ajax({
-                                url: "${app_domain}/api/product?action=edit",
+                                url: "${app_domain}/api/categogy?action=edit",
                                 type: "POST",
                                 dataType: "json",
                                 contentType: 'application/json',
                                 data: JSON.stringify({
-                                    id: products.id,
-                                    name: productName,
-                                    price: price
+                                    name: cateName,
+                                    idCate: categogies.idCate
                                 }),
                                 success(response) {
                                     if (response.errorCode >= 0) {

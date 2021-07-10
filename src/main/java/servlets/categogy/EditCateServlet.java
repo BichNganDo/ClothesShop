@@ -1,21 +1,30 @@
-package servlets;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servlets.categogy;
 
 import com.google.gson.Gson;
 import common.Config;
+import entity.Categogy;
 import entity.Product;
-
-import templater.PageGenerator;
-
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import model.CateModel;
 import model.ProductModel;
+import templater.PageGenerator;
 
-public class EditProductServlet extends HttpServlet {
+/**
+ *
+ * @author Ngan Do
+ */
+public class EditCateServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
@@ -25,13 +34,13 @@ public class EditProductServlet extends HttpServlet {
 
    
         int idEdit = Integer.parseInt(request.getParameter("id"));
-        Product product = ProductModel.getProductById(idEdit);
-        pageVariables.put("product", gson.toJson(product));
+        Categogy categogy = CateModel.getCateById(idEdit);
+        pageVariables.put("categogy", gson.toJson(categogy));
         
         
         
         response.setContentType("text/html; charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage("edit-product.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("category/edit-cate.html", pageVariables));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
@@ -39,6 +48,4 @@ public class EditProductServlet extends HttpServlet {
 
     }
     
-    
-
 }

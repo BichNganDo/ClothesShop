@@ -1,4 +1,4 @@
-package servlets;
+package servlets.api;
 
 import com.google.gson.Gson;
 import common.APIResult;
@@ -36,7 +36,7 @@ public class LoginApiUserServlet extends HttpServlet {
                     result.setErrorCode(0);
                     result.setMessage("Đăng nhập thành công!");
                     String genAuthenCookie = AuthenUser.genAuthenCookie(phone);
-                    HttpHelper.setCookie(response, "authen", genAuthenCookie, 60);
+                    HttpHelper.setCookie(response, "authen", genAuthenCookie, 86400);
 
                 } else {
                     result.setErrorCode(-3);

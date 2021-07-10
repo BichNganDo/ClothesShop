@@ -5,6 +5,7 @@
  */
 package helper;
 
+import entity.Categogy;
 import entity.Product;
 import entity.User;
 import java.sql.Connection;
@@ -199,10 +200,54 @@ public class DBHelper {
         return user;
 
     }
+
+    public List<Categogy> executeGetCate(String sql) {
+        List<Categogy> listCategogies = new ArrayList<>();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                Categogy categogy = new Categogy();
+                categogy.setIdCate(rs.getInt(1));
+                categogy.setName(rs.getString(2));
+
+                listCategogies.add(categogy);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return listCategogies;
+
+    }
+
+    public Categogy getCateById(String sql) {
+        Categogy categogy = new Categogy();
+        try {
+            open();
+            ResultSet rs = stmt.executeQuery(sql); // DML
+
+            while (rs.next()) {
+                categogy.setIdCate(rs.getInt(1));
+                categogy.setName(rs.getString(2));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close();
+        }
+        return categogy;
+
+    }
+
     public boolean checkLogin(String phone, String password) {
         open();
         String sql = "SELECT `phone`, `password` FROM `user_tbl` WHERE phone = '" + phone + "' AND password = '" + password + "'";
-        
+
         try {
             ResultSet rs = stmt.executeQuery(sql); // DML
             while (rs.next()) {

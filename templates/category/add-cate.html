@@ -205,7 +205,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="${app_domain}/listproducts" class="nav-link active">
+                                    <a href="${app_domain}/listcate" class="nav-link active">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Manage Categogies</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="${app_domain}/listproducts" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Manage Products</p>
                                     </a>
@@ -243,7 +251,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Add Products</h1>
+                            <h1 class="m-0">Add Categogy</h1>
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-6">
@@ -269,27 +277,15 @@
                         <form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Product Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Product Name">
+                                    <label>Categogy Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Categogy Name">
                                     <p style="color: red;" id="name_error"></p>
-                                </div>
-                                <div class="form-group">
-                                    <label>Image Product</label>
-                                    <div class="input-group">
-                                        <input type="file" id="exampleInputFile">
-                                        <p style="color: red;" id="file_error"></p>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="text" class="form-control" id="price" placeholder="Price">
-                                    <p style="color: red;" id="price_error"></p>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
                                 </div>
                             </div>
-
+                        </form>
                     </div>
                     <!-- /.container-fluid -->
                 </div>
@@ -313,41 +309,29 @@
             $(document).ready(function() {
                 $("#btn-submit").click(function() {
 
-                    let productName = $.trim($("#name").val());
-                    let price = $.trim($("#price").val());
+                    let cateName = $.trim($("#name").val());
                     let flag = true;
-                    console.log(productName, price);
-
-                    if (productName == "" || productName == null) {
+                    if (cateName == "" || cateName == null) {
                         $("#name_error").text("Bạn chưa nhập tên sản phẩm");
                         flag = false;
                     } else {
                         $("#name_error").text("");
                     }
 
-                    if (price == "" || price == null) {
-                        $("#price_error").text("Bạn chưa nhập giá sản phẩm");
-                        flag = false;
-                    } else {
-                        $("#price_error").text("");
-                    }
-
                     if (flag) {
                         $.ajax({
-                            url: "${app_domain}/api/product?action=add",
+                            url: "${app_domain}/api/categogy?action=add",
                             type: "POST",
                             dataType: "json",
                             contentType: 'application/json',
                             data: JSON.stringify({
-                                name: productName,
-                                price: price
+                                cateName: cateName,
                             }),
                             success(response) {
                                 if (response.errorCode >= 0) {
                                     showNotification("success", response.message);
                                     $("#name").val("");
-                                    $("#price").val("");
-                                    window.location.replace("${app_domain}/listproducts");
+                                    window.location.replace("${app_domain}/listcate");
                                 } else {
                                     showNotification("error", response.message);
                                 }

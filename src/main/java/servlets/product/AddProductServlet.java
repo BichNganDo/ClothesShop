@@ -1,18 +1,21 @@
-package servlets;
+package servlets.product;
 
 import com.google.gson.Gson;
 import common.Config;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
+import templater.PageGenerator;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import templater.PageGenerator;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AddUserServlet extends HttpServlet {
-     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+public class AddProductServlet extends HttpServlet {
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("static_domain", Config.STATIC_DOMAIN);
@@ -20,11 +23,12 @@ public class AddUserServlet extends HttpServlet {
       
 
         response.setContentType("text/html; charset=utf-8");
-        response.getWriter().println(PageGenerator.instance().getPage("add-user.html", pageVariables));
+        response.getWriter().println(PageGenerator.instance().getPage("product/add-product.html", pageVariables));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
+
 }

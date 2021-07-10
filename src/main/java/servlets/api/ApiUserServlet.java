@@ -1,28 +1,29 @@
-package servlets;
+package servlets.api;
 
 import com.google.gson.Gson;
 import common.APIResult;
-import common.Config;
 import entity.Product;
+import entity.User;
 import helper.HttpHelper;
+import helper.SecurityHelper;
 import helper.ServletUtil;
-
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.ProductModel;
+import model.UserModel;
+import org.eclipse.jetty.util.security.Password;
 import org.json.JSONObject;
 
-public class AddApiProductServlet extends HttpServlet {
+public class ApiUserServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Gson gson = new Gson();
-        List<Product> listProducts = ProductModel.getListProducts();
-        ServletUtil.printJson(request, response, gson.toJson(listProducts));
+        List<User> listUsers = UserModel.getListUsers();
+        ServletUtil.printJson(request, response, gson.toJson(listUsers));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,18 +35,21 @@ public class AddApiProductServlet extends HttpServlet {
             case "add": {
                 String bodyData = HttpHelper.getBodyData(request);
                 JSONObject jData = new JSONObject(bodyData);
-                String name = jData.optString("name");
-                String image = jData.optString("image");
-                int price = jData.optInt("price");
-                String status = jData.optString("status");
+                String name = jData.optString("username");
+                String password = SecurityHelper.getMD5Hash(jData.optString("password"));
+                String phone = jData.optString("phone");
+                String address = jData.optString("address");
 
-                int addProduct = ProductModel.addProduct(name, image, price, status);
-                if (addProduct >= 0) {
+                int addUser = UserModel.addUser(name, password, phone, address);
+                if (addUser >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Thêm sản phẩm thành công!");
+                    result.setMessage("Thêm người dùng thành công!");
+                } else if(addUser == -6){
+                    result.setErrorCode(-6);
+                    result.setMessage("Số điện thoại dã tồn tại!");
                 } else {
-                    result.setErrorCode(-1);
-                    result.setMessage("Thêm sản phẩm thất bại!");
+                    result.setErrorCode(-4);
+                    result.setMessage("Thêm người dùng thất bại!");
                 }
                 break;
             }
@@ -54,18 +58,18 @@ public class AddApiProductServlet extends HttpServlet {
                 String bodyData = HttpHelper.getBodyData(request);
                 JSONObject jData = new JSONObject(bodyData);
                 int id = jData.optInt("id");
-                String name = jData.optString("name");
-                String image = jData.optString("image");
-                int price = jData.optInt("price");
-                String status = jData.optString("status");
+                String username = jData.optString("username");
 
-                int editProduct = ProductModel.editProduct(id, name, image, price, status);
-                if (editProduct >= 0) {
+                String password = jData.optString("password");
+                String address = jData.optString("address");
+
+                int editUser = UserModel.editUser(id, username, password, address);
+                if (editUser >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Sửa sản phẩm thành công!");
+                    result.setMessage("Sửa người dùng thành công!");
                 } else {
-                    result.setErrorCode(-1);
-                    result.setMessage("Sửa sản phẩm thất bại!");
+                    result.setErrorCode(-5);
+                    result.setMessage("Sửa người dùng thất bại!");
                 }
                 break;
             }
@@ -73,13 +77,13 @@ public class AddApiProductServlet extends HttpServlet {
                 String bodyData = HttpHelper.getBodyData(request);
                 JSONObject jData = new JSONObject(bodyData);
                 int id = jData.optInt("id");
-                int removeProduct = ProductModel.removeProduct(id);
-                if (removeProduct >= 0) {
+                int removeUser = UserModel.removeUser(id);
+                if (removeUser >= 0) {
                     result.setErrorCode(0);
-                    result.setMessage("Xóa sản phẩm thành công!");
+                    result.setMessage("Xóa người dùng thành công!");
                 } else {
-                    result.setErrorCode(-2);
-                    result.setMessage("Xóa sản phẩm thất bại!");
+                    result.setErrorCode(-6);
+                    result.setMessage("Xóa người dùng thất bại!");
                 }
                 break;
             }
