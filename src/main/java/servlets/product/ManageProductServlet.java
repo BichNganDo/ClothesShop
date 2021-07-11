@@ -25,7 +25,9 @@ public class ManageProductServlet extends HttpServlet {
             pageVariables.put("message", "hello word");
 
             response.setContentType("text/html;charset=UTF-8");
+            
             response.getWriter().println(PageGenerator.instance().getPage("product/product.html", pageVariables));
+            
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.sendRedirect(Config.APP_DOMAIN + "/login");

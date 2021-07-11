@@ -383,41 +383,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 type: "GET",
                 dataType: "json",
                 success(products) {
-                    var listProducts = document.getElementById("list-products");
-                    console.log(listProducts);
-                    listProducts.innerHTML = "";
-                    for (var key in products) {
-                        if (products.hasOwnProperty(key)) {
-                            let product = products[key];
-                            let newTr = document.createElement("tr");
-
-                            newTr.innerHTML = `
-                                <td>` + product.id + `</td>
-                                <td>` + product.name + `</td>
-                                <td>
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item">
-                                            <img alt="Avatar" class="table-avatar" src="${static_domain}/dist/img/photo1.png">
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>` + product.price + `</td>
-                                <td>` + product.cateName + `</td>
-                                <td class="project-state"><span class="badge badge-secondary">` + product.status + `</span></td>
-                                <td class="project-actions text-right">
-                                    <a class="btn btn-primary btn-sm" href="#">
-                                        <i class="fas fa-folder"></i> View
-                                    </a>
-                                    <a class="btn btn-info btn-sm" href="${app_domain}/editproduct?id=` + product.id + `">
-                                        <i class="fas fa-pencil-alt"></i> Edit
-                                    </a>
-                                    <a onclick="deleteProduct(` + product.id + `)" class="btn btn-danger btn-sm" href="#">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </a>
-                                </td>`
-                            listProducts.appendChild(newTr);
-                        }
-                    }
+                    renderListProducts(products);
                 }
             })
 
@@ -425,7 +391,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         reloadProduct();
 
         //search
-        function reloadProduct2(products) {
+        function renderListProducts(products) {
             var listProducts = document.getElementById("list-products");
 
             listProducts.innerHTML = "";
@@ -493,7 +459,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             searchProduct(valueSearch, $('#idCate').val(), $('#status').val());
         });
 
-        // Lọc Category
+        // Lọc Category 
         $('#idCate').on('change', function() {
             var valueSearch = $("#value-search").val();
             var status = $("#status").val();
@@ -507,6 +473,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             searchProduct(valueSearch, idCate, this.value);
         });
 
+        //Tạo function cho 3 chức năng Filter Search, cate, status/ lấy data trên server xuống
         function searchProduct(query, idCate, status) {
             $.ajax({
                 url: "${app_domain}/api/product?action=search",
@@ -519,7 +486,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     status: status
                 }),
                 success(response) {
-                    reloadProduct2(response.data);
+                    renderListProducts(response.data);
                 }
             })
         }
