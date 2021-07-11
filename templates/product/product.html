@@ -490,61 +490,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         $("#btn-search").click(function() {
             var valueSearch = $("#value-search").val();
-            $.ajax({
-                url: "${app_domain}/api/product?action=search",
-                type: "POST",
-                dataType: "json",
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    query: valueSearch,
-                    idCate: $('#idCate').val(),
-                    status: $('#status').val()
-                }),
-                success(response) {
-                    reloadProduct2(response.data);
-                }
-            })
+            searchProduct(valueSearch, $('#idCate').val(), $('#status').val());
         });
 
         // Lọc Category
         $('#idCate').on('change', function() {
             var valueSearch = $("#value-search").val();
             var status = $("#status").val();
-            $.ajax({
-                url: "${app_domain}/api/product?action=search",
-                type: "POST",
-                dataType: "json",
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    query: valueSearch,
-                    idCate: this.value,
-                    status: status
-                }),
-                success(response) {
-                    reloadProduct2(response.data);
-                }
-            })
+            searchProduct(valueSearch, this.value, status);
         });
 
         // Lọc Status
         $('#status').on('change', function() {
             var valueSearch = $("#value-search").val();
             var idCate = $("#idCate").val();
+            searchProduct(valueSearch, idCate, this.value);
+        });
+
+        function searchProduct(query, idCate, status) {
             $.ajax({
                 url: "${app_domain}/api/product?action=search",
                 type: "POST",
                 dataType: "json",
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    query: valueSearch,
+                    query: query,
                     idCate: idCate,
-                    status: this.value
+                    status: status
                 }),
                 success(response) {
                     reloadProduct2(response.data);
                 }
             })
-        });
+        }
 
         //chọn add Category - đẩy dữ liệu bên add cate qua.
         $.ajax({
