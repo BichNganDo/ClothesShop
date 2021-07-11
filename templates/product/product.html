@@ -276,7 +276,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="input-group">
                                         <input id="value-search" type="text" name="search" class="form-control" placeholder="Search">
                                         <div class="input-group-append">
@@ -285,8 +285,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-6 text-right">
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="idCate">
+                                        <!-- <option value="1">Filter Categogy</option>
+                                        <option value="2">Váy</option>
+                                        <option value="3">Áo</option>
+                                        <option value="4">Quần</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <select class="form-control" id="status">
+                                        <option value="">Select Status</option>
+                                        <option value="Show">Show</option>
+                                        <option value="Hide">Hide</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 text-right">
                                     <a class="btn btn-primary" href="/addproduct">
                                         <i class="fas fa-plus"></i> Add Product
                                     </a>
@@ -388,9 +402,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </ul>
                                 </td>
                                 <td>` + product.price + `</td>
-                                <td>` + product.cate + `</td>
-                                <td class="project-state">` + product.status + `</td>
+                                <td>` + product.cateName + `</td>
+                                <td class="project-state"><span class="badge badge-secondary">` + product.status + `</span></td>
                                 <td class="project-actions text-right">
+                                    <a class="btn btn-primary btn-sm" href="#">
+                                        <i class="fas fa-folder"></i> View
+                                    </a>
                                     <a class="btn btn-info btn-sm" href="${app_domain}/editproduct?id=` + product.id + `">
                                         <i class="fas fa-pencil-alt"></i> Edit
                                     </a>
@@ -410,7 +427,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         //search
         function reloadProduct2(products) {
             var listProducts = document.getElementById("list-products");
-            console.log(listProducts);
+
             listProducts.innerHTML = "";
             for (var key in products) {
                 if (products.hasOwnProperty(key)) {
@@ -428,8 +445,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </ul>
                                 </td>
                                 <td>` + product.price + `</td>
-                                <td>` + product.cate + `</td>
-                                <td class="project-state">` + product.status + `</td>
+                                <td>` + product.cateName + `</td>
+                                <td class="project-state"><span class="badge badge-secondary">` + product.status + `</span></td>
                                 <td class="project-actions text-right">
                                     <a class="btn btn-primary btn-sm" href="#">
                                         <i class="fas fa-folder"></i> View
@@ -479,12 +496,82 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 dataType: "json",
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    query: valueSearch
+                    query: valueSearch,
+                    idCate: $('#idCate').val(),
+                    status: $('#status').val()
                 }),
                 success(response) {
                     reloadProduct2(response.data);
                 }
             })
+        });
+
+        // Lọc Category
+        $('#idCate').on('change', function() {
+            var valueSearch = $("#value-search").val();
+            var status = $("#status").val();
+            $.ajax({
+                url: "${app_domain}/api/product?action=search",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    query: valueSearch,
+                    idCate: this.value,
+                    status: status
+                }),
+                success(response) {
+                    reloadProduct2(response.data);
+                }
+            })
+        });
+
+        // Lọc Status
+        $('#status').on('change', function() {
+            var valueSearch = $("#value-search").val();
+            var idCate = $("#idCate").val();
+            $.ajax({
+                url: "${app_domain}/api/product?action=search",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    query: valueSearch,
+                    idCate: idCate,
+                    status: this.value
+                }),
+                success(response) {
+                    reloadProduct2(response.data);
+                }
+            })
+        });
+
+        //chọn add Category - đẩy dữ liệu bên add cate qua.
+        $.ajax({
+            url: "${app_domain}/api/categogy",
+            type: "GET",
+            dataType: "json",
+            success(categogies) {
+
+                var listCategogies = document.getElementById("idCate");
+                listCategogies.innerHTML = "";
+                let newOp = document.createElement("option");
+                newOp.setAttribute("value", "");
+                newOp.innerHTML = "Select Category";
+                listCategogies.appendChild(newOp);
+
+
+                for (var key in categogies) {
+                    if (categogies.hasOwnProperty(key)) {
+                        let categogy = categogies[key];
+
+                        let newOp = document.createElement("option");
+                        newOp.setAttribute("value", categogy.idCate);
+                        newOp.innerHTML = categogy.name;
+                        listCategogies.appendChild(newOp);
+                    }
+                }
+            }
         });
     </script>
 </body>

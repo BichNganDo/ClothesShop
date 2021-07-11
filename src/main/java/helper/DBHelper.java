@@ -110,11 +110,15 @@ public class DBHelper {
 
             while (rs.next()) {
                 Product product = new Product();
-                product.setId(rs.getInt(1));
-                product.setName(rs.getString(2));
-                product.setImage(rs.getString(3));
-                product.setPrice(rs.getInt(4));
-                product.setStatus(rs.getString(5));
+                product.setId(rs.getInt("id"));
+                product.setIdCate(rs.getInt("idCate"));
+                product.setName(rs.getString("name"));
+                product.setImage(rs.getString("image"));
+                product.setPrice(rs.getInt("price"));
+                product.setStatus(rs.getString("status"));
+                product.setCateName(rs.getString("cate_name"));
+              
+                
 
                 listProducts.add(product);
             }
@@ -136,10 +140,11 @@ public class DBHelper {
 
             while (rs.next()) {
                 product.setId(rs.getInt(1));
-                product.setName(rs.getString(2));
-                product.setImage(rs.getString(3));
-                product.setPrice(rs.getInt(4));
-                product.setStatus(rs.getString(5));
+                 product.setIdCate(rs.getInt(2));
+                product.setName(rs.getString(3));
+                product.setImage(rs.getString(4));
+                product.setPrice(rs.getInt(5));
+                product.setStatus(rs.getString(6));
 
             }
 

@@ -87,14 +87,6 @@ public class ApiUserServlet extends HttpServlet {
                 }
                 break;
             }
-            case "search": {
-                String bodyData = HttpHelper.getBodyData(request);
-                JSONObject jData = new JSONObject(bodyData);
-                String query = jData.optString("query");
-                List<Product> searchProduct = ProductModel.searchProduct(query);
-                result.setData(searchProduct);
-                break;
-            }
 
             default:
                 throw new AssertionError();

@@ -38,8 +38,9 @@ public class ApiProductServlet extends HttpServlet {
                 String image = jData.optString("image");
                 int price = jData.optInt("price");
                 String status = jData.optString("status");
+                int idCate = jData.optInt("idCate");
 
-                int addProduct = ProductModel.addProduct(name, image, price, status);
+                int addProduct = ProductModel.addProduct(name, image, price, status, idCate);
                 if (addProduct >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Thêm sản phẩm thành công!");
@@ -54,12 +55,13 @@ public class ApiProductServlet extends HttpServlet {
                 String bodyData = HttpHelper.getBodyData(request);
                 JSONObject jData = new JSONObject(bodyData);
                 int id = jData.optInt("id");
+                int idCate = jData.optInt("idCate");
                 String name = jData.optString("name");
                 String image = jData.optString("image");
                 int price = jData.optInt("price");
                 String status = jData.optString("status");
 
-                int editProduct = ProductModel.editProduct(id, name, image, price, status);
+                int editProduct = ProductModel.editProduct(id, idCate, name, image, price, status);
                 if (editProduct >= 0) {
                     result.setErrorCode(0);
                     result.setMessage("Sửa sản phẩm thành công!");
@@ -87,10 +89,14 @@ public class ApiProductServlet extends HttpServlet {
                 String bodyData = HttpHelper.getBodyData(request);
                 JSONObject jData = new JSONObject(bodyData);
                 String query = jData.optString("query");
-                List<Product> searchProduct = ProductModel.searchProduct(query);
+                int idCate = jData.optInt("idCate");
+                String status = jData.optString("status");
+                List<Product> searchProduct = ProductModel.searchProduct(query, idCate, status);
                 result.setData(searchProduct);
                 break;
             }
+           
+
 
             default:
                 throw new AssertionError();

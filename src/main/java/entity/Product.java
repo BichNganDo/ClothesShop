@@ -1,13 +1,14 @@
-
 package entity;
 
-
 public class Product {
+
     private int id;
     private String name;
     private String image;
     private int price;
     private String status;
+    private int idCate;
+    private String cateName;
 
     public Product() {
     }
@@ -63,5 +64,22 @@ public class Product {
     public void getImage(String string) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public int getIdCate() {
+        return idCate;
+    }
+
+    public void setIdCate(int idCate) {
+        this.idCate = idCate;
+    }
+
+    public String getCateName() {
+        return cateName;
+    }
+
+    public void setCateName(String cateName) {
+        this.cateName = cateName;
+    }
     
+
 }

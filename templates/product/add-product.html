@@ -295,18 +295,28 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Categogy</label>
-                                    <select class="form-control">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Váy</option>
-                                        <option value="2">Quần</option>
-                                        <option value="3">Áo</option>
-                                      </select>
+                                    <select class="form-control" id="idCate">
+                                    </select>
+                                    <p style="color: red;" id="idCate_error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="col-sm-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="status-show" type="radio" name="status" value="Show" checked>
+                                            <label class="form-check-label" for="status-show">Show</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="status-hide" type="radio" name="status" value="Hide">
+                                            <label class="form-check-label" for="status-hide">Hide</label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary" id="btn-submit">Submit</button>
                                 </div>
                             </div>
-
+                        </form>
                     </div>
                     <!-- /.container-fluid -->
                 </div>
@@ -332,8 +342,10 @@
 
                     let productName = $.trim($("#name").val());
                     let price = $.trim($("#price").val());
+                    let idCate = $.trim($("#idCate").val());
                     let flag = true;
-                    console.log(productName, price);
+                    let status = $("input[name='status']:checked").val();
+                    console.log(productName, price, status);
 
                     if (productName == "" || productName == null) {
                         $("#name_error").text("Bạn chưa nhập tên sản phẩm");
@@ -349,6 +361,14 @@
                         $("#price_error").text("");
                     }
 
+                    if (idCate == "" || idCate == null) {
+                        $("#idCate_error").text("Bạn chưa chọn danh mục");
+                        flag = false;
+                    } else {
+                        $("#idCate_error").text("");
+                    }
+
+
                     if (flag) {
                         $.ajax({
                             url: "${app_domain}/api/product?action=add",
@@ -357,13 +377,16 @@
                             contentType: 'application/json',
                             data: JSON.stringify({
                                 name: productName,
-                                price: price
+                                price: price,
+                                idCate: idCate,
+                                status: status
                             }),
                             success(response) {
                                 if (response.errorCode >= 0) {
                                     showNotification("success", response.message);
                                     $("#name").val("");
                                     $("#price").val("");
+                                    $("#idCate").val("");
                                     window.location.replace("${app_domain}/listproducts");
                                 } else {
                                     showNotification("error", response.message);
@@ -377,6 +400,34 @@
                     return flag;
 
                 });
+
+                $.ajax({
+                    url: "${app_domain}/api/categogy",
+                    type: "GET",
+                    dataType: "json",
+                    success(categogies) {
+
+                        var listCategogies = document.getElementById("idCate");
+                        listCategogies.innerHTML = "";
+                        let newOp = document.createElement("option");
+                        newOp.setAttribute("value", "");
+                        newOp.innerHTML = "Select Category";
+                        listCategogies.appendChild(newOp);
+
+
+                        for (var key in categogies) {
+                            if (categogies.hasOwnProperty(key)) {
+                                let categogy = categogies[key];
+
+                                let newOp = document.createElement("option");
+                                newOp.setAttribute("value", categogy.idCate);
+                                newOp.innerHTML = categogy.name;
+                                listCategogies.appendChild(newOp);
+                            }
+                        }
+                    }
+                });
+
 
             });
         </script>
