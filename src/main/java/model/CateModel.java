@@ -6,7 +6,6 @@
 package model;
 
 import entity.Categogy;
-import entity.Product;
 import helper.DBHelper;
 import java.util.ArrayList;
 import java.util.List;

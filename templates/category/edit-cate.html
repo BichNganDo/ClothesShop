@@ -224,6 +224,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <script src="${static_domain}/dist/js/notification.js"></script>
             <script src="${static_domain}/dist/js/toastr.min.js"></script>
             <script>
+                //Đẩy dữ liệu cũ lên giao diện hiện tại
                 var categogies = JSON.parse(document.getElementById("data-edit").value);
                 $("#name").val(categogies.name);
 

@@ -89,9 +89,7 @@ public class DBHelper {
     public int executePut(String sql) {
         try {
             open();
-
             int executeUpdate = stmt.executeUpdate(sql); // DDL
-
             return executeUpdate;
         } catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,9 +115,6 @@ public class DBHelper {
                 product.setPrice(rs.getInt("price"));
                 product.setStatus(rs.getString("status"));
                 product.setCateName(rs.getString("cate_name"));
-              
-                
-
                 listProducts.add(product);
             }
 
