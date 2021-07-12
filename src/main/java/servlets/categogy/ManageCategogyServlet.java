@@ -22,7 +22,9 @@ public class ManageCategogyServlet extends HttpServlet {
             Map<String, Object> pageVariables = new HashMap<>();
             pageVariables.put("app_domain", Config.APP_DOMAIN);
             pageVariables.put("static_domain", Config.STATIC_DOMAIN);
-            pageVariables.put("message", "hello word");
+            pageVariables.put("menu_active", "manage-category");
+            
+            pageVariables.put("aside_menu", PageGenerator.instance().getPage("aside-menu.html", pageVariables));
 
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().println(PageGenerator.instance().getPage("category/categogy.html", pageVariables));

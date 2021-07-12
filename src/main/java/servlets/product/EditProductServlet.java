@@ -22,8 +22,10 @@ public class EditProductServlet extends HttpServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("static_domain", Config.STATIC_DOMAIN);
         pageVariables.put("app_domain", Config.APP_DOMAIN);
-
-   
+        pageVariables.put("menu_active", "manage-product");
+        
+        pageVariables.put("aside_menu", PageGenerator.instance().getPage("aside-menu.html", pageVariables));
+        
         int idEdit = Integer.parseInt(request.getParameter("id"));
         Product product = ProductModel.getProductById(idEdit);
         pageVariables.put("product", gson.toJson(product));
